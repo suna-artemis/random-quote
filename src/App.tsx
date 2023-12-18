@@ -1,68 +1,73 @@
 import './App.css';
 
-import { useEffect, useState } from 'react';
-import { useRequest } from 'ahooks';
+import { useRequest, useCounter, useUpdate, useWhyDidYouUpdate } from 'ahooks';
+import { getQuotes } from './apis/QuoteApis';
+
+type QuoteObj = { quote: string; author: string };
 
 interface QuoteProps {
-  quote: string;
-  author: string;
+  quoteObj: QuoteObj;
+  color: string;
   fetchNewQuote: () => void;
 }
 
-const Quote = ({ quote, author, fetchNewQuote }: QuoteProps) => {
+const Quote = ({
+  color,
+  fetchNewQuote,
+  quoteObj: { quote, author },
+}: QuoteProps) => {
+  useWhyDidYouUpdate('Quote', {
+    quote,
+    author,
+  });
+
   return (
     <div id='quote-box'>
-      <div id='text'>{quote}</div>
+      <div id='text' className='fade-in'>
+        {quote}
+      </div>
       <div id='author'>{author}</div>
-      <div id='new-quote' onClick={fetchNewQuote}>{`fetch new quote`}</div>
+      <div
+        id='new-quote'
+        className={`bg-${color}`}
+        onClick={fetchNewQuote}>{`new quote`}</div>
       <a
         target='_blank'
         href='https://twitter.com/intent/tweet'
         id='tweet-quote'
-        rel='noreferrer'>{`tweet current quote`}</a>
+        rel='noreferrer'>{` `}</a>
     </div>
   );
 };
-
 function App() {
-  type Quote = { quote: string; author: string };
-  const [quotes, setQuotes] = useState<Quote[]>([]);
-  const [quoteObj, setQuoteObj] = useState<Quote>();
+  const { data, loading } = useRequest(getQuotes);
+  const { quotes }: { quotes: QuoteObj[] } = data?.data ?? { quotes: [] };
+  const [count, { inc }] = useCounter(0);
 
-  const fetchNewQuote = async () => {
-    const res = await fetch(
-      'https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json',
-    );
-    const quotesRes = await res.json();
-    const quotes = quotesRes.quotes;
-    setQuotes(quotes);
-    const index = Math.trunc(Math.random() * quotes.length);
-    setQuoteObj(quotes[index]);
-  };
+  const index = Math.trunc(Math.random() * quotes.length);
+  const quoteObj = quotes.length ? quotes[index] : undefined;
 
-  const handleFetchNewQuote = () => {
-    if (quotes.length) {
-      const index = Math.trunc(Math.random() * quotes.length);
-      setQuoteObj(quotes[index]);
-    } else {
-      fetchNewQuote();
-    }
-  };
+  const rerender = useUpdate();
 
-  useEffect(() => {
-    fetchNewQuote();
-  }, []);
+  const colors = ['red', 'green', 'blue', 'brown'];
+  const color = colors[count % colors.length];
 
   return (
-    <>
-      {quoteObj && (
+    <div className={['container', color, `bg-${color}`].join(' ')}>
+      {!loading && quoteObj ? (
         <Quote
-          quote={quoteObj.quote}
-          author={quoteObj.author}
-          fetchNewQuote={handleFetchNewQuote}
+          key={color}
+          color={color}
+          quoteObj={quoteObj}
+          fetchNewQuote={() => {
+            inc();
+            rerender();
+          }}
         />
+      ) : (
+        <>{loading}</>
       )}
-    </>
+    </div>
   );
 }
 

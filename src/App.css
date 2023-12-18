@@ -1,7 +1,76 @@
-#quote-box {
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.container {
+  font-family: 'Raleway', sans-serif;
+  font-size: large;
+  font-weight: 500;
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+#quote-box {
+  width: 450px;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+.fade-in {
+  animation: fadeIn 1.2s ease-in-out;
+}
+.bg-red {
+  background-color: rgb(231, 76, 60);
+}
+.bg-green {
+  background-color: rgb(115, 168, 87);
+}
+.bg-blue {
+  background-color: rgb(22, 160, 133);
+}
+.bg-brown {
+  background-color: rgb(44, 62, 80);
+}
+.red {
+  color: rgb(231, 76, 60);
+}
+.green {
+  color: rgb(115, 168, 87);
+}
+.blue {
+  color: rgb(22, 160, 133);
+}
+.brown {
+  color: rgb(44, 62, 80);
+}
+#text {
+  width: 100%;
+}
+#author {
+  margin-top: 24px;
+  text-align: right;
+  font-size: 20px;
+}
+#author::before {
+  content: '- ';
+}
+#new-quote {
+  text-align: end;
+  width: max-content;
+  color: #fff;
+  padding: 8px 18px 6px 18px;
+  font-size: 0.85em;
+  height: 38px;
+  border-radius: 3px;
+  margin-top: 24px;
 }
