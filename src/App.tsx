@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 
 import { useRequest, useCounter, useUpdate, useWhyDidYouUpdate } from 'ahooks';
 import { getQuotes } from './apis/QuoteApis';
