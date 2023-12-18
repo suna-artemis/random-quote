@@ -17,10 +17,11 @@ jobs:
     #     node-version: [14.x, 16.x, 18.x]
     # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
+      - uses: actions/checkout@v3
       - name: ⎔ Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 7.30.3
+          version: 8.6.6
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
