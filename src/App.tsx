@@ -35,7 +35,7 @@ const Quote = ({
         target='_blank'
         href='https://twitter.com/intent/tweet'
         id='tweet-quote'
-        rel='noreferrer'>{` `}</a>
+        rel='noreferrer'>{`twitter`}</a>
     </div>
   );
 };
