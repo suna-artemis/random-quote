@@ -1,7 +1,7 @@
 interface AppProps {}
 
 const App = ({}: AppProps) => {
-  return <div>{`Hello world! Add Github Secret.`}</div>;
+  return <div>{`something news!`}</div>;
 };
 
 export default App;
