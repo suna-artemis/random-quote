@@ -27,11 +27,13 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-
     needs: build
+    permissions:
+      contents: write
 
     steps:
       - name: Deploy to Github Pages
+
         uses: peaceiris/actions-gh-pages@v3.9.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
